@@ -275,8 +275,11 @@ input{min-height:44px}
   </div>
   <div id="mode-online" class="mode-panel hide">
     <h3>🌐 Online Multiplayer</h3><input id="onlineName" placeholder="Your player name" maxlength="14" autocomplete="off">
-    <label for="onlineHost" class="s" style="display:block;text-align:left">Online WebSocket server URL (must be deployed)</label><input id="onlineHost" placeholder="wss://your-game-server.example" autocomplete="url">
-    <button class="full" id="onlineCreate">🌐 Create online room</button>
+    <label for="onlineHost" class="s" style="display:block;text-align:left">Online WebSocket server URL (must be deployed)</label><input
+  id="onlineHost"
+  type="hidden"
+  value="wss://digital-swami-online.onrender.com/"
+>
     <div class="row"><input id="onlineCode" placeholder="4-letter room code" maxlength="4" autocomplete="off" style="text-transform:uppercase"><button class="gold" id="onlineJoin" style="margin-bottom:8px">Join online</button></div>
     <p class="s">Online play needs a deployed WebSocket room server and internet access. This HTML file alone does not provide that server.</p>
     <button class="g full back-modes" type="button">← Back to modes</button>
