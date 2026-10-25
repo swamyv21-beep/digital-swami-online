@@ -7,7 +7,7 @@ const path = require('path');
 const WebSocket = require('ws');
 const crypto = require('crypto');
 
-const PORT = Number(process.env.PORT || 8787);
+const PORT = Number(process.env.PORT || 10000);
 const MAX_PLAYERS = 8;
 const rooms = new Map();
 const peers = new Map();
