@@ -280,7 +280,9 @@ input{min-height:44px}
   type="hidden"
   value="wss://digital-swami-online.onrender.com/"
 >
-    <div class="row"><input id="onlineCode" placeholder="4-letter room code" maxlength="4" autocomplete="off" style="text-transform:uppercase"><button class="gold" id="onlineJoin" style="margin-bottom:8px">Join online</button></div>
+    <div class="row"><input id="onlineCode" placeholder="4-letter room code" maxlength="4" autocomplete="off" style="text-transform:uppercase"><button class="full" id="onlineCreate" type="button">
+  Create Online Room
+</button><button class="gold" id="onlineJoin" style="margin-bottom:8px">Join online</button></div>
     <p class="s">Online play needs a deployed WebSocket room server and internet access. This HTML file alone does not provide that server.</p>
     <button class="g full back-modes" type="button">← Back to modes</button>
   </div>
@@ -389,6 +391,20 @@ try{
   else $("lanHost").value="";
 }catch(e){$("lanHost").value=""}
 $("create").onclick=function(){online(code4())};
+$("onlineCreate").onclick = function () {
+  online(code4(), "online");
+};
+
+$("onlineJoin").onclick = function () {
+  var c = $("onlineCode").value.trim().toUpperCase();
+
+  if (c.length !== 4) {
+    $("err").textContent = "Enter the 4-letter room code.";
+    return;
+  }
+
+  online(c, "online");
+};
 $("join").onclick=function(){var c=$("code").value.trim().toUpperCase();if(c.length!==4){$("err").textContent="Enter the 4-letter code.";return}online(c)};
 $("local").onclick=function(){
   var n=$("locals").value.split(",").map(function(x){return x.trim()}).filter(Boolean);
