@@ -363,7 +363,12 @@ async function online(code,mode){
   }
   if(mode!=="online"&&!/^wss?:\/\//i.test(host))host="ws://"+host;
   if(mode==="online"&&!/^wss:\/\//i.test(host)){ $("err").textContent="Online mode requires a secure wss:// server URL.";return }
-  if(!/:[0-9]+$/.test(host.replace(/^wss?:\/\//i,"")))host=host.replace(/\/$/,"")+":8787";
+  if (
+  mode !== "online" &&
+  !/:[0-9]+$/.test(host.replace(/^wss?:\/\//i, ""))
+) {
+  host = host.replace(/\/$/, "") + ":8787";
+}
   $("err").textContent=mode==="online"?"Connecting to online room…":"Connecting to hotspot/Wi-Fi room…";
   try{
     var socket=new WebSocket(host);await new Promise(function(resolve,reject){var t=setTimeout(function(){reject(new Error("Connection timed out. Check host IP, same Wi-Fi, firewall and server."))},7000);socket.addEventListener("open",function(){clearTimeout(t);resolve()},{once:true});socket.addEventListener("error",function(){clearTimeout(t);reject(new Error("Could not connect. Make sure the LAN server is running and both devices share the same Wi-Fi/hotspot."))},{once:true})});
