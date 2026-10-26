@@ -264,6 +264,12 @@ input{min-height:44px}
     <button type="button" class="mode-card" data-mode="hotspot"><span class="mode-icon">📶</span><b>Hotspot / Wi-Fi</b><small>Same network · Nearby family</small><span class="mode-cta">Open setup ↗</span></button>
     <button type="button" class="mode-card" data-mode="online"><span class="mode-icon">🌐</span><b>Online Play</b><small>Play across different networks</small><span class="mode-cta">Open setup ↗</span></button>
     <button type="button" class="mode-card" data-mode="local"><span class="mode-icon">👨‍👩‍👧‍👦</span><b>Pass &amp; Play</b><small>One phone · Take turns</small><span class="mode-cta">Start on this device ↗</span></button>
+    <button type="button" class="mode-card" data-mode="single">
+  <span class="mode-icon">🤖</span>
+  <b>Single Player + Bots</b>
+  <small>Play alone against computer players</small>
+  <span class="mode-cta">Start solo game ↗</span>
+</button>
   </div>
   <div id="mode-hotspot" class="mode-panel hide">
     <h3>📶 Hotspot / Same Wi-Fi</h3><input id="name" placeholder="Your player name" maxlength="14" autocomplete="off">
@@ -330,8 +336,40 @@ input{min-height:44px}
 var $=function(i){return document.getElementById(i)};
 function esc(s){var d=document.createElement("div");d.textContent=s;return d.innerHTML}
 function show(id){["home","hub","play"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
-function chooseMode(mode){["hotspot","online","local"].forEach(function(m){$("mode-"+m).classList.toggle("hide",m!==mode)});$("err").textContent="";if(mode==="local")$("locals").focus();else if(mode==="hotspot")$("name").focus();else $("onlineName").focus()}
-document.querySelectorAll("[data-mode]").forEach(function(b){b.addEventListener("click",function(){chooseMode(b.getAttribute("data-mode"))})});
+var singlePlayerMode = false;
+
+function chooseMode(mode) {
+  singlePlayerMode = mode === "single";
+
+  ["hotspot", "online", "local"].forEach(function (m) {
+    document.getElementById("mode-" + m)
+      .classList.toggle(
+        "hide",
+        m !== (singlePlayerMode ? "local" : mode)
+      );
+  });
+
+  document.getElementById("err").textContent = "";
+
+  if (singlePlayerMode) {
+    document.getElementById("locals").value = "Player 1";
+    var botSelect = document.getElementById("botCount");
+    if (botSelect.value === "0") botSelect.value = "1";
+    document.querySelector("#mode-local h3").textContent =
+      "🤖 Single Player + Bot Players";
+    document.getElementById("local").textContent = "Start solo game";
+  } else if (mode === "local") {
+    document.querySelector("#mode-local h3").textContent =
+      "👨‍👩‍👧‍👦 Pass & Play";
+    document.getElementById("local").textContent =
+      "Start pass & play";
+    document.getElementById("locals").focus();
+  } else if (mode === "hotspot") {
+    document.getElementById("name").focus();
+  } else {
+    document.getElementById("onlineName").focus();
+  }
+}
 document.querySelectorAll(".back-modes").forEach(function(b){b.addEventListener("click",function(){["hotspot","online","local"].forEach(function(m){$("mode-"+m).classList.add("hide")});$("err").textContent=""})});
 var R=null,me={name:"",s:{}},local=null,cleanups=[];
 var ICON={trivia:"📖",dahan:"🏹",deer:"🪔",ashta:"🐚",carrom:"🎯",brainvita:"🔮",memory:"🧠",ramasita:"🕵️",sos:"🕉️"};
