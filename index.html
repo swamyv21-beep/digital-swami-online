@@ -445,8 +445,19 @@ $("onlineJoin").onclick = function () {
 };
 $("join").onclick=function(){var c=$("code").value.trim().toUpperCase();if(c.length!==4){$("err").textContent="Enter the 4-letter code.";return}online(c)};
 $("local").onclick=function(){
-  var n=$("locals").value.split(",").map(function(x){return x.trim()}).filter(Boolean);
-  var bots=parseInt($("botCount").value,10)||0;
+ $("local").onclick=function(){
+  var n = singlePlayerMode
+    ? ["Player 1"]
+    : $("locals").value.split(",")
+        .map(function(x){ return x.trim(); })
+        .filter(Boolean);
+
+  var bots = parseInt($("botCount").value, 10) || 0;
+
+  if (singlePlayerMode) {
+    bots = Math.max(1, bots);
+    bots = Math.min(7, bots);
+  }
   n=n.slice(0,8-bots);
   if(n.length<1){$("err").textContent="Enter at least one human player name.";return}
   var used={};n=n.map(function(x){return x.slice(0,18)}).filter(function(x){var k=x.toLowerCase();if(used[k])return false;used[k]=true;return true});
